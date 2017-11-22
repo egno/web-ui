@@ -4,7 +4,7 @@
       <el-header>Header</el-header>
       <el-container>
         <el-aside>
-          <navigator></navigator>
+          <app-navigator></app-navigator>
         </el-aside>
         <el-main>Main
           <router-view></router-view>
@@ -20,7 +20,7 @@
 <script>
 import {Aside, Container, Footer, Header, Main, Menu} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-import Navigator from '@/components/Navigator'
+import AppNavigator from '@/components/AppNavigator'
 
 export default {
   name: 'app',
@@ -31,7 +31,7 @@ export default {
     'el-header': Header,
     'el-main': Main,
     'el-menu': Menu,
-    'Navigator': Navigator
+    'AppNavigator': AppNavigator
   }
 }
 </script>

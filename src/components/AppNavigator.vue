@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import {Menu} from 'element-ui'
+import { Menu } from 'element-ui'
 
 export default {
   components: {

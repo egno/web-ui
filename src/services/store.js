@@ -8,11 +8,13 @@ export const store = new Vuex.Store({
   state: {
     apiUrl: './static/',
     appTitle: 'Приложение',
+    loggedIn: false,
+    navigatorVisible: true,
+    navMenuItems: null,
     urls: {
       NavMenuItems: 'menu.json',
       UserInfo: 'user_info.json'
     },
-    navMenuItems: null,
     userInfo: null
   },
   getters: {
@@ -22,6 +24,12 @@ export const store = new Vuex.Store({
     appTitle: (state) => {
       return state.appTitle
     },
+    loggedIn: (state) => {
+      return (state.loggedIn)
+    },
+    navigatorVisible: (state) => {
+      return (state.navigatorVisible)
+    },
     navMenuItems: (state) => {
       return (state.navMenuItems)
     },
@@ -30,11 +38,21 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
+    logIn: (state) => {
+      state.loggedIn = true
+    },
+    logOut: (state) => {
+      state.userInfo = null
+      state.loggedIn = false
+    },
     setNavMenuItems: (state, payload) => {
       state.navMenuItems = payload
     },
     setUserInfo: (state, payload) => {
       state.userInfo = payload
+    },
+    toggleNavigator: (state, payload) => {
+      state.navigatorVisible = !state.navigatorVisible
     }
   },
   actions: {
@@ -47,8 +65,21 @@ export const store = new Vuex.Store({
         commit(mutation, response.data)
       })
       .catch(e => {
+        commit(mutation, null)
         console.log(e)
       })
+    },
+    logIn: ({dispatch, commit}) => {
+      dispatch('loadRestData', 'UserInfo')
+      commit('logIn')
+      dispatch('loadRestData', 'NavMenuItems')
+    },
+    logOut: ({dispatch, commit}) => {
+      commit('logOut')
+      dispatch('loadRestData', 'NavMenuItems')
+    },
+    toggleNavigator: ({commit}) => {
+      commit('toggleNavigator')
     }
   }
 })

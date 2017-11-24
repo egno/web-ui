@@ -1,59 +1,55 @@
 <template>
   <el-header
-  height="2em"
+  height="3em"
   >
-  <el-row :gutter="20">
-    <el-col :span="16">
-      <div class="grid-content left">
-        <span class="main-title">
-          {{ appTitle }}
-        </span>
-      </div>
-    </el-col>
-    <el-col :span="8">
-      <div class="grid-content right">
-        <el-dropdown>
-          <i class="el-icon-setting" style="margin-right: 15px"></i>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item
-            v-for="(item, index) in menuItems"
-            :key="index"
-            >
-            {{ item.title }}
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <span v-if="userInfo" class="supplementary">{{ userInfo.name }}</span>
-      </div>
-    </el-col>
-  </el-row>
+    <el-row :gutter="20">
+      <el-col :span="4">
+        <div class="grid-content left">
+          <el-button size="mini"
+          type="text"
+          :icon="navigatorIcon"
+          @click='toggleNavigator'>
+          Меню
+          </el-button>
+        </div>
+      </el-col>
+      <el-col :span="12">
+        {{ appTitle }}
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content right">
+          <user-info-button>
+          </user-info-button>
+        </div>
+      </el-col>
+    </el-row>
   </el-header>
 </template>
 
 <script>
-import { Col, Dropdown, DropdownItem, DropdownMenu, Header, Row } from 'element-ui'
-import { mapGetters } from 'vuex'
+import { Button, Col, Header, Row } from 'element-ui'
+import { mapActions, mapGetters } from 'vuex'
+import UserInfoButton from '@/components/UserInfoButton'
 
 export default {
   components: {
+    'el-button': Button,
     'el-col': Col,
-    'el-dropdown': Dropdown,
-    'el-dropdown-item': DropdownItem,
-    'el-dropdown-menu': DropdownMenu,
     'el-row': Row,
-    'el-header': Header
+    'el-header': Header,
+    'UserInfoButton': UserInfoButton
   },
   data () {
     return {
+      dialogVisible: false,
       menuItems: [
         {
-          title: 'Войти'
+          title: 'Войти',
+          action: 'showLoginBox'
         },
         {
-          title: 'Выйти'
-        },
-        {
-          title: 'Личная информация'
+          title: 'Выйти',
+          action: 'showLoginBox'
         }
       ]
     }
@@ -61,17 +57,28 @@ export default {
   computed: {
     ...mapGetters([
       'appTitle',
+      'navigatorVisible',
       'userInfo'
-    ])
+    ]),
+    navigatorIcon () {
+      return (this.navigatorVisible) ? 'el-icon-arrow-left' : 'el-icon-arrow-down'
+    }
+  },
+  methods: {
+    ...mapActions(
+      [
+        'toggleNavigator'
+      ]
+    )
   }
 }
 </script>
 
 <style>
 .el-header {
-  background-color: #eee;
+  line-height: 3em;
+  background-color: #EDF2FC;
   color: #333;
-  line-height: 2em;
 }
 
 .supplementary {

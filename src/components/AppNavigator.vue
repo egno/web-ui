@@ -36,3 +36,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.el-menu {
+  border-right: none;
+}
+</style>

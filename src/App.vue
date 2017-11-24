@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {Aside, Container, Footer, Header, Main, Menu} from 'element-ui'
+import { Aside, Container, Footer, Header, Main } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import AppNavigator from '@/components/AppNavigator'
 
@@ -30,7 +30,6 @@ export default {
     'el-footer': Footer,
     'el-header': Header,
     'el-main': Main,
-    'el-menu': Menu,
     'AppNavigator': AppNavigator
   }
 }
@@ -60,7 +59,7 @@ export default {
 .el-aside {
   background-color: #D3DCE6;
   color: #333;
-  text-align: center;
+  text-align: left;
   /*line-height: 200px;*/
 }
 

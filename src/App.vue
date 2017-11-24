@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header>Header</el-header>
+      <app-header>
+      </app-header>
       <el-container>
         <el-aside>
           <app-navigator></app-navigator>
@@ -10,7 +11,8 @@
           <router-view></router-view>
         </el-main>
       </el-container>
-      <el-footer>
+      <el-footer
+      height="1.5em">
       Footer
       </el-footer>
     </el-container>
@@ -18,8 +20,10 @@
 </template>
 
 <script>
-import { Aside, Container, Footer, Header, Main } from 'element-ui'
+import { Aside, Container, Footer, Main } from 'element-ui'
+import { mapActions } from 'vuex'
 import 'element-ui/lib/theme-chalk/index.css'
+import AppHeader from '@/components/AppHeader'
 import AppNavigator from '@/components/AppNavigator'
 
 export default {
@@ -28,9 +32,18 @@ export default {
     'el-aside': Aside,
     'el-container': Container,
     'el-footer': Footer,
-    'el-header': Header,
     'el-main': Main,
-    'AppNavigator': AppNavigator
+    'AppNavigator': AppNavigator,
+    'AppHeader': AppHeader
+  },
+  methods: {
+    ...mapActions([
+      'loadRestData'
+    ])
+  },
+  mounted () {
+    this.loadRestData('NavMenuItems')
+    this.loadRestData('UserInfo')
   }
 }
 </script>
@@ -40,7 +53,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
@@ -57,10 +69,6 @@ export default {
 }
 
 .el-aside {
-  background-color: #D3DCE6;
-  color: #333;
-  text-align: left;
-  /*line-height: 200px;*/
 }
 
 .el-main {

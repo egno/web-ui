@@ -1,3 +1,4 @@
+import axios from 'axios'
 import Vue from 'vue'
 import Vuex from 'vuex'
 
@@ -5,73 +6,49 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
   state: {
-    appTitle: '',
-    apiUrl: ''
-    tokenName: 'jwt-token',
-    dataName: 'data',
-    loggedIn: true,
-    backRoute: false,
-    dataCache: {},
-    showInPercent: {}
+    apiUrl: './static/',
+    appTitle: 'Приложение',
+    urls: {
+      NavMenuItems: 'menu.json',
+      UserInfo: 'user_info.json'
+    },
+    navMenuItems: null,
+    userInfo: null
   },
   getters: {
+    apiUrl: (state) => {
+      return state.apiUrl
+    },
     appTitle: (state) => {
       return state.appTitle
     },
-    backRoute: (state) => {
-      return state.backRoute
+    navMenuItems: (state) => {
+      return (state.navMenuItems)
     },
-    checkLogIn: (state) => {
-      state.loggedIn = (ls.get(state.tokenName))
-      return (state.loggedIn)
-    },
-    dataCache: (state) => {
-      // state.dataCache = JSON.parse(ls.get(state.dataName)) || {}
-      return state.dataCache
-    },
-    dataName: (state) => state.dataName,
-    showInPercent: (state) => state.showInPercent,
-    tokenName: (state) => {
-      return state.tokenName
+    userInfo: (state) => {
+      return (state.userInfo)
     }
   },
   mutations: {
-    logIn: (state, payload) => {
-      ls.set(state.tokenName, payload)
-      state.loggedIn = true
+    setNavMenuItems: (state, payload) => {
+      state.navMenuItems = payload
     },
-    logOut: (state) => {
-      ls.remove(state.tokenName)
-      state.loggedIn = false
-    },
-    setBackRoute: (state, payload) => {
-      if (payload !== '/login') {
-        state.backRoute = payload
-      }
-    },
-    setDataCache: (state, payload) => {
-      state.dataCache = Object.assign(state.dataCache, payload)
-      // ls.set(state.dataName, JSON.stringify(state.dataCache))
-    },
-    setShowInPercent: (state, payload) => {
-      state.showInPercent[payload] = !state.showInPercent[payload]
+    setUserInfo: (state, payload) => {
+      state.userInfo = payload
     }
   },
   actions: {
-    logIn: ({commit}, payload) => {
-      commit('logIn', payload)
-    },
-    logOut: ({commit}) => {
-      commit('logOut')
-    },
-    setBackRoute: ({commit}, payload) => {
-      commit('setBackRoute', payload)
-    },
-    setDataCache: ({commit}, payload) => {
-      commit('setDataCache', payload)
-    },
-    setShowInPercent: ({commit}, payload) => {
-      commit('setShowInPercent', payload)
+    loadRestData: ({commit, state}, payload) => {
+      const url = state.urls[payload]
+      const mutation = 'set' + payload
+      if (!url) return
+      return axios.get(state.apiUrl + url)
+      .then(response => {
+        commit(mutation, response.data)
+      })
+      .catch(e => {
+        console.log(e)
+      })
     }
   }
 })
